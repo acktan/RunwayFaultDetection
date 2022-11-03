@@ -12,8 +12,8 @@ from tqdm import tqdm
 
 
 class ScrapeImages:
-    def __init__(self):
-        self.driver = webdriver.Firefox(service=Service(executable_path=r"C:\Users\ckunt\lib\geckodriver.exe"))
+    def __init__(geckoPath: str):
+        self.driver = webdriver.Firefox(service=Service(executable_path=geckoPath))
         self.driver.get('https://geoservices.ign.fr/bdortho#telechargement')
         self.urls_to_download = None
 
