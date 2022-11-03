@@ -27,8 +27,9 @@ class ScrapeImages:
         self.urls_to_download = download_section.find_elements(By.XPATH,
                                                                ".//*")
         self.urls_to_download = [url.text for url in self.urls_to_download]
-        self.urls_to_download = [s for s in downloadURLs if "://" in s]
-        self.urls_to_download = [s.split('\n') for s in self.urls_to_download][0]
+        self.urls_to_download = [s for s in self.urls_to_download if "://" in s]
+        self.urls_to_download = [s.split('\n') for s in self.urls_to_download]
+        self.urls_to_download = [item for sublist in self.urls_to_download for item in sublist]
         self.driver.quit()
         return self.urls_to_download
 
