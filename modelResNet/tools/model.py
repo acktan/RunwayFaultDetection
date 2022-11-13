@@ -1,4 +1,5 @@
 from torchvision import models as models
+import torch
 import torch.nn as nn
 
 def model(pretrained: bool, 
@@ -16,3 +17,5 @@ def model(pretrained: bool,
     # we have 5 classes in total
     model.fc = nn.Linear(2048, 5)
     return model
+
+
