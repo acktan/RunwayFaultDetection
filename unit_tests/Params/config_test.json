@@ -1,0 +1,18 @@
+{
+"paths":{"bdortho_geom_input_path" : "../Inputs/AirportExtractionSample_Step3/Orthophotos_Geom/dalles.shp",
+"bdortho_input_path": "/home/jovyan/hfactory_magic_folders/colas_data_challenge/group_shared_workspace/BD_ortho/93/ORTHOHR/1_DONNEES_LIVRAISON_2022-06-00256/",
+"bdcarta_input_path": "../Inputs/AirportExtractionSample_Step3/BD_CARTA/france.shp",
+"runway_input_path":"../Inputs/RunwayExtractionSample_Step4/",
+"model_input_path":"../Inputs/Model/",
+"runway_input_file":"runways_detection.csv",
+"Outputs_path":"../Outputs/",
+"folder_train": "train/",
+"folder_test": "test/",
+"folder_extraction_airports":"ExtractionAirports/",
+"folder_extraction_runways":"ExtractionRunways/",
+"folder_evaluation":"EvaluationModel/",
+"folder_inference": "Inference/",
+"folder_model": "Model"
+
+}
+}
