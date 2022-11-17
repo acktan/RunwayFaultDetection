@@ -36,7 +36,7 @@ class DataLoader():
                                                             test_size=0.2,
                                                             random_state=44
                                                            )
-        DATASET_PATH = conf_path["bdortho_input_path"]
+        DATASET_PATH = conf_path["model_input_path"] + conf_path["folder_train"]
         X_train = [os.path.join(DATASET_PATH, str(f)) for f in X_train]
         X_test = [os.path.join(DATASET_PATH, str(f)) for f in X_test]
 

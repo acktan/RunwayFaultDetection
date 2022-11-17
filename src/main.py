@@ -13,6 +13,8 @@ sys.path.insert(0, "Utils/")
 import utils
 import inference
 import dataloader
+import model
+import train
 import extraction_runways
 import evaluation_model
 import extraction_airports
@@ -34,11 +36,27 @@ def main(logger, conf, img_shape):
     #logger.info("Extraction and Saving of Runways Completed...")
     time_1 = time()
     logger.debug("Time for extraction execution :" + str(time_1 - START))
-    dataset_class = dataloader.DataLoader(conf)
-    train_ds, test_ds = dataset_class.create_train_test()
+    if conf["model"]["train"] == True:
+        logger.info("Training Model...")
+        dataset_class = dataloader.DataLoader(conf)
+        train_ds, test_ds = dataset_class.create_train_test()
+        model_class = model.Model(conf)
+        model_mobilenet = model_class.create_model()
+        train_class = train.Train(conf, model_mobilenet, train_ds, test_ds)
+        history = train_class.training()
+        eval_class = evaluation_model.Evaluate(conf, history)
+        loss, val_loss, macro_f1, val_macro_f1 = eval_class.learning_curves()
+        logger.info(f"The train and validation loss: {loss}, {val_loss}.")
+        logger.info(f"The train and validation Macro F1: {macro_f1}, {val_macro_f1}.")
+    else:
+        logger.info("Loading Model...")
+        train_class = train.Train(conf)
+        model_mobilenet = train_class.load_my_model()
+    # Enter name of submission if save_preds = True in conf.json
+    inference_class = inference.Inference(conf, model_mobilenet, "test_subm")
+    df = inference_class.make_prediction()
     time_2 = time()
-    logger.debug("Time for train and val dataset creation:" + str(time_2 - time_1))
-    #logger.debug("Time for training model :" + str(time() - START))
+    logger.debug("Time for training/loading model and predicting :" + str(time_2 - time_1))
 
     
 if __name__ == '__main__':
