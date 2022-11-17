@@ -6,7 +6,7 @@ cache:
     - .cache/pip
     - venv/
 before_script:
-  - pip install pytest pandas geopandas rasterio rtree pygeos opencv-python pillow
+  - pip install pytest pandas geopandas rasterio rtree pygeos opencv-python pillow matplotlib
 test:
   script:
     - python -m pytest
