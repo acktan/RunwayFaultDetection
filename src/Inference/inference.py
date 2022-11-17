@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 
 from keras.preprocessing import image
+from tensorflow.keras.utils import load_img
 
 warnings.filterwarnings('ignore')
 logger = logging.getLogger('main_logger')
@@ -48,7 +49,7 @@ class Inference():
             img_path = os.path.join(testing_path, str(ID))
 
             # Read and prepare image
-            img = image.load_img(img_path, target_size=(IMG_SIZE,IMG_SIZE,CHANNELS))
+            img = load_img(img_path, target_size=(IMG_SIZE,IMG_SIZE,CHANNELS))
             img = image.img_to_array(img)
             img = img/255
             img = np.expand_dims(img, axis=0)
