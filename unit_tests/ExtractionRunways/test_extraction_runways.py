@@ -1,16 +1,17 @@
 """Unit tests for extraction runway functions"""
 
-import sys
 import json
 import cv2
 import numpy as np
 from src.Extraction_Runways.extraction_runways import Extractrunways
-#sys.path.insert(0, "../src/Extraction_Runways/")
 
-#import extraction_runways
+# sys.path.insert(0, "../src/Extraction_Runways/")
 
-path_conf = './unit_tests/Params/config_test.json'
-conf = json.load(open(path_conf, 'r'))
+# import extraction_runways
+
+path_conf = "./unit_tests/Params/config_test.json"
+conf = json.load(open(path_conf, "r"))
+
 
 def test_get_labeled_runways():
     """Test the reading and preparation of runways file.
@@ -24,6 +25,7 @@ def test_get_labeled_runways():
     extraction_runways_class = Extractrunways(conf)
     df = extraction_runways_class.get_labeled_runways()
     assert len(df) == 10
+
 
 def test_calculate_coordinates():
     """Test the calculation of coordinates for runways.
@@ -50,7 +52,7 @@ def test_calculate_coordinates():
 
     extraction_runways_class = Extractrunways(conf)
     df = extraction_runways_class.get_labeled_runways()
-    label = df.loc[0,"label"]
+    label = df.loc[0, "label"]
     cnt = extraction_runways_class.calculate_coordinates(label)
     assert cnt[0][0][0] == 9329
     assert cnt[0][0][1] == 1680
@@ -77,11 +79,22 @@ def test_crop_save_runway():
     """
     extraction_runways_class = Extractrunways(conf)
     df = extraction_runways_class.get_labeled_runways()
-    label = df.loc[np.where(df["image"] == "cropped_cv2_93-2021-0670-6860-LA93-0M20-E080_.jpg"), "label"].values[0]
+    label = df.loc[
+        np.where(
+            df["image"] == "cropped_cv2_93-2021-0670-6860-LA93-0M20-E080_.jpg"
+        ),
+        "label",
+    ].values[0]
     image_name = "cropped_cv2_93-2021-0670-6860-LA93-0M20-E080_.jpg"
     index = 0
-    path_output = conf["paths"]["Outputs_path"] + conf["paths"]["Outputs_test_path"] + conf["paths"]["runways_extraction_file"]
+    path_output = (
+        conf["paths"]["Outputs_path"]
+        + conf["paths"]["Outputs_test_path"]
+        + conf["paths"]["runways_extraction_file"]
+    )
     cnt = extraction_runways_class.calculate_coordinates(label)
     rect = cv2.minAreaRect(cnt)
-    output = extraction_runways_class.crop_save_runway(rect, image_name, path_output, index)
-    assert output == None
+    output = extraction_runways_class.crop_save_runway(
+        rect, image_name, path_output, index
+    )
+    assert output is None

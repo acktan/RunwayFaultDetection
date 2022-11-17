@@ -1,18 +1,19 @@
 """Test Model Functionalities"""
 
-import os
 import re
 import pandas as pd
 import json
 from src.Modelling.dataloader import DataLoader
 from src.Modelling.model import Model
 
-path_conf = './unit_tests/Params/config_test.json'
-conf = json.load(open(path_conf, 'r'))
+path_conf = "./unit_tests/Params/config_test.json"
+conf = json.load(open(path_conf, "r"))
+
 
 def test_create_dataset():
     """
-    Test that the dataset are well created and according to the parameters we specified.
+    Test that the dataset are well created and according to the
+        parameters we specified.
     """
     BATCH_SIZE = conf["model"]["BATCH_SIZE"]
     IMG_SIZE = conf["model"]["IMG_SIZE"]
@@ -24,6 +25,7 @@ def test_create_dataset():
     for f, l in train_ds.take(1):
         assert f.numpy().shape == (BATCH_SIZE, IMG_SIZE, IMG_SIZE, CHANNELS)
         assert l.numpy().shape == (BATCH_SIZE, N_LABELS)
+
 
 def test_number_layers_mobilenet():
     """

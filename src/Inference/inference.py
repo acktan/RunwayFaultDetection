@@ -9,11 +9,11 @@ import pandas as pd
 
 from tensorflow.keras.utils import load_img, img_to_array
 
-warnings.filterwarnings('ignore')
-logger = logging.getLogger('main_logger')
+warnings.filterwarnings("ignore")
+logger = logging.getLogger("main_logger")
 
 
-class Inference():
+class Inference:
     """Create class inference to make predictions."""
 
     def __init__(self, conf, model, submission_name=None):
@@ -33,43 +33,57 @@ class Inference():
         """
         logger.info("Making predictions...")
         save = self.conf["model"]["save_preds"]
-        testing_path = self.conf["paths"]["model_input_path"] + self.conf["paths"]["folder_test"]
-        test_label_path = self.conf["paths"]["model_input_path"] + self.conf["paths"]["test_label_file"]
+        testing_path = (
+            self.conf["paths"]["model_input_path"] +
+            self.conf["paths"]["folder_test"]
+        )
+        test_label_path = (
+            self.conf["paths"]["model_input_path"]
+            + self.conf["paths"]["test_label_file"]
+        )
         IMG_SIZE = self.conf["model"]["IMG_SIZE"]
         CHANNELS = self.conf["model"]["CHANNELS"]
         thresh = self.conf["model"]["PREDICTION_THRESH"]
         test_labels = pd.read_csv(test_label_path)
         IDs = test_labels["filename"]
 
-        if save==True:
+        if save:
             assert type(self.submission_name) == str
 
         for idx, ID in enumerate(IDs):
             img_path = os.path.join(testing_path, str(ID))
 
             # Read and prepare image
-            img = load_img(img_path, target_size=(IMG_SIZE,IMG_SIZE,CHANNELS))
+            img = load_img(img_path,
+                           target_size=(IMG_SIZE, IMG_SIZE, CHANNELS))
             img = img_to_array(img)
-            img = img/255
+            img = img / 255
             img = np.expand_dims(img, axis=0)
 
             # Generate prediction
-            prediction = (self.model.predict(img) > thresh).astype('int')[0]
+            prediction = (self.model.predict(img) > thresh).astype("int")[0]
             if idx == 0:
                 predictions = prediction
             else:
                 predictions = np.vstack([predictions, prediction])
 
         df = pd.DataFrame(predictions, columns=test_labels.columns[1:])
-        df['filename'] = test_labels.filename
-        df = df[['filename', 
-                 'FISSURE', 
-                 'REPARATION', 
-                 'FISSURE LONGITUDINALE', 
-                 'MISE EN DALLE']]
-        
-        path = self.conf["paths"]["Outputs_path"] + self.conf["paths"]["folder_inference"]
-        if save==True:
+        df["filename"] = test_labels.filename
+        df = df[
+            [
+                "filename",
+                "FISSURE",
+                "REPARATION",
+                "FISSURE LONGITUDINALE",
+                "MISE EN DALLE",
+            ]
+        ]
+
+        path = (
+            self.conf["paths"]["Outputs_path"] +
+            self.conf["paths"]["folder_inference"]
+        )
+        if save:
             logger.info(f"Saving model to {path+self.submission_name}.csv")
             df.to_csv(path + self.submission_name + ".csv", index=False)
 
