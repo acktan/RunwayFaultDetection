@@ -4,11 +4,12 @@ import sys
 import json
 import cv2
 import numpy as np
-sys.path.insert(0, "../src/Extraction_Runways/")
+from src.Extraction_Runways.extraction_runways import Extractrunways
+#sys.path.insert(0, "../src/Extraction_Runways/")
 
-import extraction_runways
+#import extraction_runways
 
-path_conf = './Params/config_test.json'
+path_conf = './unit_tests/Params/config_test.json'
 conf = json.load(open(path_conf, 'r'))
 
 def test_get_labeled_runways():
@@ -20,7 +21,7 @@ def test_get_labeled_runways():
     Output:
         lend(df) should be 10.
     """
-    extraction_runways_class = extraction_runways.Extractrunways(conf)
+    extraction_runways_class = Extractrunways(conf)
     df = extraction_runways_class.get_labeled_runways()
     assert len(df) == 10
 
@@ -47,7 +48,7 @@ def test_calculate_coordinates():
               [[8731, 1400]]]
     """
 
-    extraction_runways_class = extraction_runways.Extractrunways(conf)
+    extraction_runways_class = Extractrunways(conf)
     df = extraction_runways_class.get_labeled_runways()
     label = df.loc[0,"label"]
     cnt = extraction_runways_class.calculate_coordinates(label)
@@ -74,7 +75,7 @@ def test_crop_save_runway():
     Output:
         None, image should be saved in Outputs_Test file.
     """
-    extraction_runways_class = extraction_runways.Extractrunways(conf)
+    extraction_runways_class = Extractrunways(conf)
     df = extraction_runways_class.get_labeled_runways()
     label = df.loc[np.where(df["image"] == "cropped_cv2_93-2021-0670-6860-LA93-0M20-E080_.jpg"), "label"].values[0]
     image_name = "cropped_cv2_93-2021-0670-6860-LA93-0M20-E080_.jpg"

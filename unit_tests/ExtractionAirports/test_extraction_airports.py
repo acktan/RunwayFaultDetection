@@ -6,7 +6,7 @@ import json
 from src.Extraction_Airports.extraction_airports import Extractionairports
 #import extraction_airports
 
-path_conf = './Params/config_test.json'
+path_conf = './unit_tests/Params/config_test.json'
 conf = json.load(open(path_conf, 'r'))
 
 
