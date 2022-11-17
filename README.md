@@ -12,7 +12,7 @@ This computer vision challenge has been proposed to sereval teams from the MSc X
 ### Objective 
 Identify asphalt mixed defeact on airport track, and rank them with a clear data visualization. Identify airport with the best business opportunity for Colas, regarding its activities. Extend the consideration to all kind of Colas Business opportunities
 
-### Step for the chalenge
+### Steps for the chalenge
 1. Collect french airport open data
 The objective of this step is to identify & collect open data of french airports (name, geolocalization...).
 We used the BD Carto & BD Orthophoto from the French public organization IGN : https://geoservices.ign.fr/bdcarto
