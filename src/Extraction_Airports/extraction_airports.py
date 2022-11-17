@@ -3,13 +3,13 @@
 import geopandas
 import pandas as pd
 import numpy as np
-import cv2
 from PIL import Image, ImageDraw
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon, mapping
 import rasterio
 from rasterio.windows import Window
 import warnings
+import cv2
 
 import logging
 logger = logging.getLogger('main_logger')
@@ -36,8 +36,6 @@ class Extractionairports:
         logger.info('Reading input for extraction of airports...')
         path_ortho = self.conf_path["bdortho_geom_input_path"]
         path_aero = self.conf_path["bdcarta_input_path"]
-        print(path_ortho)
-        print(path_aero)
         bd_ortho_data = geopandas.read_file(path_ortho)
         bd_aero = geopandas.read_file(path_aero)
         bd_ortho_data["area"] = bd_ortho_data.area
@@ -245,7 +243,6 @@ class Extractionairports:
         Returns:
            Save a cropped airport image.
         """
-        print("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG")
         pts = np.array(poly_crop_adj)
         # (1) Crop the bounding rect
         if not multi:
@@ -321,9 +318,7 @@ class Extractionairports:
         Returns:
            Saves cropped images of airports.
         """
-        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
         for i in range(len(dup_aero)):
-            print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
             logger.info("Iteration " + str(i+1) + ' out of ' + str(len(dup_aero)))
             df_aero_i = df[df["TOPONYME"]==dup_aero[i]].reset_index(drop=True)
             min_mi_lat_l = []
@@ -331,7 +326,6 @@ class Extractionairports:
             min_mi_lon_l = []
             max_ma_lon_l = []
             for k in range(len(df_aero_i)):
-                print("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC")
                 mi_lon, ma_lon, mi_lat, ma_lat = self.get_edges_photos_multi(
                     df_aero_i.iloc[k]["geometry_intersection"])
                 if isinstance(mi_lat, list):
@@ -355,7 +349,6 @@ class Extractionairports:
             del min_mi_lon_l, max_ma_lon_l
             logger.info("Cropping and saving...")
             for k in range(len(df_aero_i)):
-                print("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
                 logger.info("Iteration "+str(k+1)+" out of "+str(len(df_aero_i)))
                 logger.info("aeroport "+df_aero_i.iloc[k]["TOPONYME"])
                 logger.info("Getting cropping coordinates...")
@@ -367,7 +360,6 @@ class Extractionairports:
                 if df_aero_i.iloc[k]["geometry_intersection"].geom_type == "Polygon":
                     logger.info("Reading photo...")
                     with rasterio.open(path_input+path_im) as src:
-                        print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
                         im_crop = src.read(window=Window(min_2, f_min_1, (max_2-min_2), (f_max_1-f_min_1)))
                         im_crop = np.swapaxes(im_crop, 0, 2)
                         im_crop = np.swapaxes(im_crop, 0, 1)
@@ -386,7 +378,6 @@ class Extractionairports:
                 else:
                     logger.info("This is a MultiPolygon!")
                     for q in range(len(up_poly_crop)):
-                        print("IIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
                         logger.info("Iteration q "+str(q+1) + " out of " + str(len(up_poly_crop)))
                         logger.info("Reading photo...")
                         with rasterio.open(path_input+path_im) as src:
@@ -402,19 +393,16 @@ class Extractionairports:
                             poly_last = df_aero_i.iloc[k]["geometry_intersection"]
                         else:
                             poly_last = poly_last.union(df_aero_i.iloc[k]["geometry_intersection"])
-                        print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
                         for llo in range(2):
                             for lla in range(2):
                                 img_fin[int(lon_new_orig+llo*((f_max_1[q]-f_min_1[q])//2)):int(lon_new_orig+(llo+1)*((f_max_1[q]-f_min_1[q])//2)),
                                         int(lat_new_orig+lla*((max_2[q]-min_2[q])//2)):int(lat_new_orig+(lla+1)*((max_2[q]-min_2[q])//2)),:] = im_crop[llo*((f_max_1[q]-f_min_1[q])//2):(llo+1)*((f_max_1[q]-f_min_1[q])//2),lla*((max_2[q]-min_2[q])//2):(lla+1)*((max_2[q]-min_2[q])//2),:]
-            print("FFFFGGGGGGGGGGGGGGGGGG")
             del up_poly_crop
             del f_min_1, f_max_1, min_2, max_2, lat_new_orig
             del lon_new_orig, poly_mapped_int_coords
             del im_crop
             map_last = mapping(poly_last)["coordinates"]
             for p in range(len(map_last)):
-                print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")
                 if p == 0:
                     pop_lst = [(pp[0], min_mi_lat, height, pp[1], max_ma_lon, width) for pp in map_last[p]]
                     new_lst_1 = ([
@@ -447,7 +435,6 @@ class Extractionairports:
            Saves all cropped images of airports.
         """
         df, df_multi_photos, dup_aero = self.read_create_input()
-        print(len(df), len(df_multi_photos), len(dup_aero))
         path_output = self.conf_path["Outputs_path"] + self.conf_path["folder_extraction_airports"]
         path_input = self.conf_path["bdortho_input_path"]
         self.extract_airports(df, path_input, path_output)

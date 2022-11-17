@@ -80,6 +80,52 @@ class Extractrunways:
                 ])
         return cnt
 
+    def crop_save_runway(self, rect, image_name, path_output, index):
+        start = time.time()
+        box = cv2.boxPoints(rect)
+        box = np.int0(box)
+        time_1 = time.time()
+        logger.info(f"Prepare boxPoints. This took {time_1 - start}")
+        path = self.conf_path["Outputs_path"]
+        path_in = path + self.conf_path["folder_extraction_airports"]
+        img = cv2.imread(path_in + image_name)
+        time_2 = time.time()
+        logger.info(f"Read image. This took {time_2-time_1}")
+        if img is None:
+            logger.info(f"The image does not exist in the airports cropped: {image_name}")
+        else:
+            cv2.drawContours(img, [box], 0, (0, 0, 255), 2)
+
+            # get width and height of the detected rectangle
+            width = int(rect[1][0])
+            height = int(rect[1][1])
+
+            src_pts = box.astype("float32")
+
+            # coordinate of the points in box points after the rectangle has been
+            # straightened
+            dst_pts = np.array([[0, height-1],
+                                    [0, 0],
+                                    [width-1, 0],
+                                    [width-1, height-1]], dtype="float32")
+            # the perspective transformation matrix
+            M = cv2.getPerspectiveTransform(src_pts, dst_pts)
+
+            # directly warp the rotated rectangle to get the straightened rectangle
+            warped = cv2.warpPerspective(img, M, (width, height))
+            time_3 = time.time()
+            logger.info(f"Crop and rotate rectangle. This took {time_3-time_2}")
+            path_im = image_name.split("cropped")[1]
+            shape_warped = warped.shape
+            # check if image is horizontal and change to vertical
+            if shape_warped[1] > shape_warped[0]:
+                warped = cv2.rotate(warped, cv2.ROTATE_90_COUNTERCLOCKWISE)
+            cv2.imwrite(path_output + "runway_" + str(index) + path_im, warped)
+            time_4 = time.time()
+            logger.info(f"Save Runway. This took {time_4-time_3}")
+        return None
+
+
     def detect_save_runway(self):
         """Extract and save runways.
         Args:
@@ -89,53 +135,12 @@ class Extractrunways:
         """
         df_runways = self.get_labeled_runways()
         for index in df_runways.index:
-            start = time.time()
             label = df_runways.loc[index,"label"]
             image_name = df_runways.loc[index,"image"]
             logger.info(f"Start cropping runway process for image: {image_name}")
             cnt = self.calculate_coordinates(label)
             rect = cv2.minAreaRect(cnt)
-
-            box = cv2.boxPoints(rect)
-            box = np.int0(box)
-            time_1 = time.time()
-            logger.info(f"Prepare boxPoints. This took {time_1 - start}")
             path = self.conf_path["Outputs_path"]
-            path_in = path + self.conf_path["folder_extraction_airports"]
-            img = cv2.imread(path_in + image_name)
-            time_2 = time.time()
-            logger.info(f"Read image. This took {time_2-time_1}")
-            if img is None:
-                logger.info(f"The image does not exist in the airports cropped: {image_name}")
-            else:
-                cv2.drawContours(img, [box], 0, (0, 0, 255), 2)
-
-                # get width and height of the detected rectangle
-                width = int(rect[1][0])
-                height = int(rect[1][1])
-
-                src_pts = box.astype("float32")
-
-                # coordinate of the points in box points after the rectangle has been
-                # straightened
-                dst_pts = np.array([[0, height-1],
-                                        [0, 0],
-                                        [width-1, 0],
-                                        [width-1, height-1]], dtype="float32")
-                # the perspective transformation matrix
-                M = cv2.getPerspectiveTransform(src_pts, dst_pts)
-
-                # directly warp the rotated rectangle to get the straightened rectangle
-                warped = cv2.warpPerspective(img, M, (width, height))
-                time_3 = time.time()
-                logger.info(f"Crop and rotate rectangle. This took {time_3-time_2}")
-                path_im = image_name.split("cropped")[1]
-                path_out = path + self.conf_path["folder_extraction_runways"]
-                shape_warped = warped.shape
-                # check if image is horizontal and change to vertical
-                if shape_warped[1] > shape_warped[0]:
-                    warped = cv2.rotate(warped, cv2.ROTATE_90_COUNTERCLOCKWISE)
-                cv2.imwrite(path_output + "runway_" + str(index) + path_im, warped)
-                time_4 = time.time()
-                logger.info(f"Save Runway. This took {time_4-time_3}")
+            path_out = path + self.conf_path["folder_extraction_runways"]
+            self.crop_save_runway(rect, image_name, path_out, index)
         return None
