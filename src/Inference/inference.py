@@ -7,8 +7,7 @@ import warnings
 import numpy as np
 import pandas as pd
 
-from keras.preprocessing import image
-from tensorflow.keras.utils import load_img
+from tensorflow.keras.utils import load_img, img_to_array
 
 warnings.filterwarnings('ignore')
 logger = logging.getLogger('main_logger')
@@ -50,7 +49,7 @@ class Inference():
 
             # Read and prepare image
             img = load_img(img_path, target_size=(IMG_SIZE,IMG_SIZE,CHANNELS))
-            img = image.img_to_array(img)
+            img = img_to_array(img)
             img = img/255
             img = np.expand_dims(img, axis=0)
 
