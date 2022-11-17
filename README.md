@@ -36,7 +36,7 @@ This step was particularly important to the Colas team. We had to identify simil
 Last but not least, we presented the team's results and especially the potential of the technology for the Colas Group during a presentation in front of several senior COlAS collaborators (Chief Digital Officer, Chief Data Officer, Digital and Core business applications Director, Chief Data Officer, Lead Data/AI, ...) and HEC professors (head of Corporate Partnership Dpt, Prof. Chair Holder of Bouygues Chair “Smart city and the common good”, Associate Dean for Research)
 
 <hr />
-###### Requirements
+## Requirements
 The requirements.txt file should list all Python libraries that your notebooks depend on, and they will be installed using
     pip install -r requirements.txt
 <hr />
