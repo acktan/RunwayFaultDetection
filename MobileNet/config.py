@@ -17,9 +17,14 @@ EPOCHS = 2
 
 THRESH = 0.5
 
+PREDICTION_THRESH = 0.4
+
 SAVED_MODELS_PATH_TO_FOLDERS = repo + 'hfactory_magic_folders/colas_data_challenge/group_shared_workspace/Models/saved_models/'
 FOLDER_NAME = '28th_model_augustin_LR_0_00001_MobileNetV3_50E_augmented_0_3thresh/'
 MODEL_NAME = 'epoch_{epoch:02d}_val_loss_{val_loss:.4f}.h5'
+
+PATH_TO_SAVED_SUBMISSIONS_FOLDER = repo + 'hfactory_magic_folders/colas_data_challenge/group_shared_workspace/Models/submissions/'
+SUBMISSION_NAME = '43th_final_model_to_submit.csv'
 
 FEATURE_EXTRACTOR_URL = "https://tfhub.dev/google/imagenet/mobilenet_v3_large_100_224/feature_vector/5"
     # "https://tfhub.dev/google/imagenet/inception_v3/feature_vector/5"
