@@ -8,6 +8,8 @@
 "Outputs_path":"../Outputs/",
 "folder_train": "train/",
 "folder_test": "test/",
+"train_label_file":"labels_train.csv",
+"test_label_file":"template_test.csv",
 "folder_extraction_airports":"ExtractionAirports/",
 "folder_extraction_runways":"ExtractionRunways/",
 "folder_evaluation":"EvaluationModel/",
@@ -16,6 +18,18 @@
 
 },
 "path_log" : "../Params/Logs/logs.log",
-"log_level" : "DEBUG"
+"log_level" : "DEBUG",
+"model":{"IMG_SIZE":224,
+"CHANNELS":3,
+"BATCH_SIZE":256,
+"LR":1e-4,
+"N_LABELS":5,
+"EPOCHS":2,
+"THRESH":0.5,
+"PREDICTION_THRESH":0.4,
+"FEATURE_EXTRACTOR_URL":"https://tfhub.dev/google/imagenet/mobilenet_v3_large_100_224/feature_vector/5",
+"model_name":"model20221117_15-15-48",
+"train":true,
+"save_preds":true}
 }
 
