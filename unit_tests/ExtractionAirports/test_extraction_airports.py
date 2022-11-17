@@ -2,9 +2,9 @@
 
 import sys
 import json
-sys.path.insert(0, "../src/Extraction_Airports/")
-
-import extraction_airports
+#sys.path.insert(0, "../src/Extraction_Airports/")
+from src.Extraction_Airports.extraction_airports import Extractionairports
+#import extraction_airports
 
 path_conf = './Params/config_test.json'
 conf = json.load(open(path_conf, 'r'))
@@ -30,7 +30,7 @@ def test_get_edges_photos():
         max_lon: 675000.0
     """
     img_shape = (25000, 25000)
-    extraction_airports_class = extraction_airports.Extractionairports(conf, img_shape)
+    extraction_airports_class = Extractionairports(conf, img_shape)
     df, _, _ = extraction_airports_class.read_create_input()
     poly_boundaries = df.iloc[0]['geometry_photos']
     min_lat, max_lat, min_lon, max_lon = extraction_airports_class.get_edges_photos(poly_boundaries)
@@ -61,7 +61,7 @@ def test_get_edges_intersection():
         poly_crop: see assert below
     """
     img_shape = (25000, 25000)
-    extraction_airports_class = extraction_airports.Extractionairports(conf, img_shape)
+    extraction_airports_class = Extractionairports(conf, img_shape)
     df, _, _ = extraction_airports_class.read_create_input()
     poly_boundaries = df.iloc[0]['geometry_photos']
     poly_intersection = df.iloc[0]['geometry_intersection']
@@ -102,7 +102,7 @@ def test_get_cropping_coordinates():
         max_2: 149063
     """
     img_shape = (25000, 25000)
-    extraction_airports_class = extraction_airports.Extractionairports(conf, img_shape)
+    extraction_airports_class = Extractionairports(conf, img_shape)
     df, _, _ = extraction_airports_class.read_create_input()
     poly_boundaries = df.iloc[0]['geometry_photos']
     poly_intersection = df.iloc[0]['geometry_intersection']
@@ -136,7 +136,7 @@ def test_get_photos_edges_multi():
         max_lon: 670000.0
     """
     img_shape = (25000, 25000)
-    extraction_airports_class = extraction_airports.Extractionairports(conf, img_shape)
+    extraction_airports_class = Extractionairports(conf, img_shape)
     _, df_multi_photos, dup_aero = extraction_airports_class.read_create_input()
     df_aero_i = df_multi_photos[
         df_multi_photos["TOPONYME"] == dup_aero[0]
@@ -165,7 +165,7 @@ def test_extract_airports():
         Should be None and function should run without issues.
     """
     img_shape = (25000, 25000)
-    extraction_airports_class = extraction_airports.Extractionairports(conf, img_shape)
+    extraction_airports_class = Extractionairports(conf, img_shape)
     df, _, _ = extraction_airports_class.read_create_input()
     df = df.head(1)
     path_input = conf["paths"]["bdortho_input_path"]
@@ -187,7 +187,7 @@ def test_extract_airports_multi():
         Should be None and function should run without issues.
     """
     img_shape = (25000, 25000)
-    extraction_airports_class = extraction_airports.Extractionairports(conf, img_shape)
+    extraction_airports_class = Extractionairports(conf, img_shape)
     _, df_multi_photos, dup_aero = extraction_airports_class.read_create_input()
     dup_aero = dup_aero[0]
     path_input = conf["paths"]["bdortho_input_path"]
