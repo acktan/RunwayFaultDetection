@@ -37,7 +37,9 @@ Last but not least, we presented the team's results and especially the potential
 
 ## Requirements
 The requirements.txt file should list all Python libraries that your notebooks depend on, and they will be installed using
+<hr />   
     pip install -r requirements.txt
+<hr />
 
 ## Structure of the repository
 1. Inputs
