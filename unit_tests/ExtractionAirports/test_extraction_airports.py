@@ -130,10 +130,10 @@ def test_get_photos_edges_multi():
     Output:
         len(df_multi_photos): 5
         len(dup_aero): 2
-        min_lat: 6876311.488950567
+        min_lat: 6875957.100000893
         max_lat: 6880000.0
-        min_lon: 662829.5000000057
-        max_lon: 665000.0
+        min_lon: 665000.0
+        max_lon: 670000.0
     """
     img_shape = (25000, 25000)
     extraction_airports_class = extraction_airports.Extractionairports(conf, img_shape)
@@ -145,10 +145,10 @@ def test_get_photos_edges_multi():
     min_lat, max_lat, min_lon, max_lon = extraction_airports_class.get_edges_photos_multi(poly_boundaries)
     assert len(df_multi_photos) == 5
     assert len(dup_aero) == 2
-    assert min_lat == 6876311.488950567
+    assert min_lat == 6875957.100000893
     assert max_lat == 6880000.0
-    assert min_lon == 662829.5000000057
-    assert max_lon == 665000.0
+    assert min_lon == 665000.0
+    assert max_lon == 670000.0
 
 
 def test_extract_airports():
@@ -169,7 +169,7 @@ def test_extract_airports():
     df, _, _ = extraction_airports_class.read_create_input()
     df = df.head(1)
     path_input = conf["paths"]["bdortho_input_path"]
-    path_output = conf["paths"]["Outputs_path"] + conf["paths"]["airportextraction_file"]
+    path_output = conf["paths"]["Outputs_path"] + conf["paths"]["Outputs_test_path"] + conf["paths"]["airportextraction_file"]
     output = extraction_airports_class.extract_airports(df, path_input, path_output)
     assert output == None
 '''

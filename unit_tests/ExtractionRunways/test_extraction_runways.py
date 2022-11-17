@@ -79,7 +79,7 @@ def test_crop_save_runway():
     label = df.loc[np.where(df["image"] == "cropped_cv2_93-2021-0670-6860-LA93-0M20-E080_.jpg"), "label"].values[0]
     image_name = "cropped_cv2_93-2021-0670-6860-LA93-0M20-E080_.jpg"
     index = 0
-    path_output = conf["paths"]["Outputs_path"] + conf["paths"]["runways_extraction_file"]
+    path_output = conf["paths"]["Outputs_path"] + conf["paths"]["Outputs_test_path"] + conf["paths"]["runways_extraction_file"]
     cnt = extraction_runways_class.calculate_coordinates(label)
     rect = cv2.minAreaRect(cnt)
     output = extraction_runways_class.crop_save_runway(rect, image_name, path_output, index)
