@@ -16,7 +16,7 @@ from tools.model import create_model
 
 from config import *
 
-labels_train = pd.read_csv(label_train_path)
+labels_train = pd.read_csv(LABEL_TRAIN_PATH)
 
 X_train, X_test, y_train, y_test = train_test_split(labels_train['filename'],
                                                     labels_train.drop('filename', axis=1),
@@ -32,12 +32,12 @@ y_test = y_test.values
 
 train_ds = create_dataset(filenames=X_train, 
                           labels=y_train, 
-                          batch_size=batch_size, 
+                          batch_size=BATCH_SIZE, 
                           is_training=True
                          )
 test_ds = create_dataset(filenames=X_test, 
                          labels=y_test, 
-                         batch_size=batch_size, 
+                         batch_size=BATCH_SIZE, 
                          is_training=True
                         )
 
@@ -51,7 +51,7 @@ model = create_model(feature_extractor_url=FEATURE_EXTRACTOR_URL,
 history = training(model=model, 
                    train_ds=train_ds, 
                    test_ds=test_ds, 
-                   path_to_saved_model_folder=SAVED_MODELS_PATH_TO_FOLDERS+FOLDER_NAME, 
+                   path_to_saved_models_folder=SAVED_MODELS_PATH_TO_FOLDERS+FOLDER_NAME, 
                    model_name=MODEL_NAME, 
                    epochs=EPOCHS, 
                    batch_size=BATCH_SIZE

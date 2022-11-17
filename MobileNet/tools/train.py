@@ -36,12 +36,12 @@ def training(model, train_ds, test_ds, path_to_saved_models_folder, model_name, 
     history = model.fit(train_ds,
                         epochs=epochs,
                         validation_data=test_ds,
-                        # callbacks=[
-                        #         tf.keras.callbacks.ModelCheckpoint(
-                        #             os.path.join(path_to_saved_models_folder, model_name),
-                        #             monitor='val_loss', save_best_only=True
-                        #             )
-                        #         ]
+                        callbacks=[
+                                tf.keras.callbacks.ModelCheckpoint(
+                                    os.path.join(path_to_saved_models_folder, model_name),
+                                    monitor='val_loss', save_best_only=True
+                                    )
+                                ]
                        )
     print(f'Training took {round(time()-start, 2)} sec')
     return history

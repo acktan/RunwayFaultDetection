@@ -71,7 +71,7 @@ def create_dataset(filenames, labels, batch_size=BATCH_SIZE, is_training=True):
         # This is a small dataset, only load it once, and keep it in memory.
         dataset = dataset.cache()
         # Shuffle the data each buffer size
-        dataset = dataset.shuffle(buffer_size=len(filename))
+        dataset = dataset.shuffle(buffer_size=len(filenames))
 
     # Batch the data for multiple steps
     dataset = dataset.batch(batch_size)
