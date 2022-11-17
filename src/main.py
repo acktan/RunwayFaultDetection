@@ -7,12 +7,12 @@ sys.path.insert(0, "Evaluation_Model/")
 sys.path.insert(0, "Extraction_Airports/")
 sys.path.insert(0, "Extraction_Runways/")
 sys.path.insert(0, "Inference/")
-sys.path.insert(0, "Model/")
+sys.path.insert(0, "Modelling/")
 sys.path.insert(0, "Utils/")
 
 import utils
 import inference
-import model
+import dataloader
 import extraction_runways
 import evaluation_model
 import extraction_airports
@@ -29,10 +29,16 @@ def main(logger, conf, img_shape):
     #extract_airports_class = extraction_airports.Extractionairports(conf, img_shape)
     #extract_airports_class.extract_all_airports()
     #logger.info("Extraction and Saving of Airports Completed...")
-    extract_runways_class = extraction_runways.Extractrunways(conf)
-    extract_runways_class.detect_save_runway()
-    logger.info("Extraction and Saving of Runways Completed...")
-    logger.debug("Time for total execution :" + str(time() - START))
+    #extract_runways_class = extraction_runways.Extractrunways(conf)
+    #extract_runways_class.detect_save_runway()
+    #logger.info("Extraction and Saving of Runways Completed...")
+    time_1 = time()
+    logger.debug("Time for extraction execution :" + str(time_1 - START))
+    dataset_class = dataloader.DataLoader(conf)
+    train_ds, test_ds = dataset_class.create_train_test()
+    time_2 = time()
+    logger.debug("Time for train and val dataset creation:" + str(time_2 - time_1))
+    #logger.debug("Time for training model :" + str(time() - START))
 
     
 if __name__ == '__main__':
