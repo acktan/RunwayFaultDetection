@@ -35,96 +35,36 @@ This step was particularly important to the Colas team. We had to identify simil
 7. Pitch
 Last but not least, we presented the team's results and especially the potential of the technology for the Colas Group during a presentation in front of several senior COlAS collaborators (Chief Digital Officer, Chief Data Officer, Digital and Core business applications Director, Chief Data Officer, Lead Data/AI, ...) and HEC professors (head of Corporate Partnership Dpt, Prof. Chair Holder of Bouygues Chair “Smart city and the common good”, Associate Dean for Research)
 
+<hr />
+###### Requirements
+The requirements.txt file should list all Python libraries that your notebooks depend on, and they will be installed using
+    pip install -r requirements.txt
+<hr />
+
 ## Structure of the repository
+1. Inputs
+The inputs folder contains all the inputs needed to run the pipeline. It is composed of three subfolders:
+- AirportExtractionSample_Step3:
+This folder contains three subfolders:
+BD_CARTA which contains information regarding the geometry of airports in France
+Orthophotos_Geom which contains the geometry of orthophotos downloaded from [ING website](https://geoservices.ign.fr/bdortho). Note that only the geometry of orthophotos for department 93 are available.
+Orthophotos which contains the actual orthophotos from the ING website. Note that the user should add the photos in the folder when running the pipeline locally and update the path "bdortho_input_path" in the config file.
 
+- Model
+This folder contains two files: the "labels_train.csv" which contains the name of images in the training set and their labels and the template_test.csv which contains the name of images for the test set. Two other folders are also available there: the "train" folder contains the images for the training set and the "test" folder contains the images for the test set.
 
+- RunwayExtractionSample_Step4
+This folder contains a csv file which is the output of a manual labeling tool called [Label Studio](https://labelstud.io/guide/index.html#Quick-start). The file will contain the image name and the the x, y, width, height and rotation coordinates corresponding to runways in each image. Note that currently only a sample of images have been labeled.
 
+2. Outputs
+The outputs folder contains all the outputs that are created throughout the pipeline. For each step, the output is stored in a separate folder. For example, the extraction of airports from orthophotos are stored in the "ExtractionAirports" folder, the extraction of runways is stored in the "ExtractionRunways" folder, the predictions are stored as a csv file in the Inference folder, the model is saved in the Model folder and the unit tests outputs are stored in the Outputs_Test folder.
 
-## Getting started
+3. Params
+The Params folder contains a Config folder with a config.json file where all parameters used in the pipeline are set. It also contains a Logs with a logs.log file where the loggings are stored when the pipeline is run.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+4. src
+The src folder is the folder that contains all the pipeline. The main.py file is used to run the whole pipeline. The user would need to run "python main.py" from the src folder to run the pipeline.
+The first step is to extract the airports from orthophotos, this is done by the Extractairports class in the extract_airports.py file. The second step is to extract the runways from cropped airport images, and this is done by the Extractrunways class in the extract_runways.py file. Next, we move on to the modelling. The user can choose to train a model or load a model that has been previously saved, ensuring that the parameters in the config are set up correctly: set the model -> train parameter to True or False and set the model -> model_name parameter to a model that is available in your Outputs->Model folder. The data is prepared with a DataLoader class in the dataloader.py file, the model is created with a class in the model.py file and is trained in the train.py file. Finally, the model is evaluated using the Evaluate class in the evaluation_model.py file and the predictions are inferred from the Infererence class in the inference.py file. Note that if the parameter "save_preds" is set to True in the config file, then the predictions output will be saved in the Outputs->Inference folder.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.code.hfactory.io/adrian.tan/colasproject.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.code.hfactory.io/adrian.tan/colasproject/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+5. Unit tests
+The unit tests folder is used to test the functions that are in the src file. In order to run the tests, run "pytest" in the terminal while being at the root. This folder has a separate config file where different parameters are set for the unit tests. It also follows the same structure as the src file in order to ensure that each step of the pipeline is tested.
