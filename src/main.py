@@ -26,13 +26,13 @@ def main(logger, conf, img_shape):
         img_shape: shape of orthophoto images.
     """
     START = time()
-    # extract_airports_class = extraction_airports.Extractionairports(
-    # conf, img_shape)
-    # extract_airports_class.extract_all_airports()
-    # logger.info("Extraction and Saving of Airports Completed...")
-    # extract_runways_class = extraction_runways.Extractrunways(conf)
-    # extract_runways_class.detect_save_runway()
-    # logger.info("Extraction and Saving of Runways Completed...")
+    extract_airports_class = extraction_airports.Extractionairports(
+    conf, img_shape)
+    extract_airports_class.extract_all_airports()
+    logger.info("Extraction and Saving of Airports Completed...")
+    extract_runways_class = extraction_runways.Extractrunways(conf)
+    extract_runways_class.detect_save_runway()
+    logger.info("Extraction and Saving of Runways Completed...")
     time_1 = time()
     logger.debug("Time for extraction execution :" + str(time_1 - START))
     if conf["model"]["train"]:
