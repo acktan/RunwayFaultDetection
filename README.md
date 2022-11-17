@@ -1,3 +1,6 @@
+[![pipeline status](https://gitlab.code.hfactory.io/adrian.tan/colasproject/badges/main/pipeline.svg)](https://gitlab.code.hfactory.io/adrian.tan/colasproject/-/commits/main)
+[![coverage report](https://gitlab.code.hfactory.io/adrian.tan/colasproject/badges/main/coverage.svg)](https://gitlab.code.hfactory.io/adrian.tan/colasproject/-/commits/main)
+
 # Multi-label classification of runway images to determine the different defects they may have 
 **Colas x MSc X-HEC Data Science for Business**
 
