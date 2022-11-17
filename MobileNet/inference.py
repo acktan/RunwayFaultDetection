@@ -55,7 +55,6 @@ def make_prediction(IDs, model, submission_name=None, path_to_saved_submissions_
              'MISE EN DALLE']]
     
     if save==True:
-        # assert type(submission_name) == str
         df.to_csv(path_to_saved_submissions_folder + submission_name, index=False)
     
     return df
