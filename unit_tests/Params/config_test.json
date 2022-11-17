@@ -4,10 +4,35 @@
 "bdcarta_input_path": "./Inputs/AirportExtractionSample_Step3/BD_CARTA/france.shp",
 "runway_input_path":"./Inputs/RunwayExtractionSample_Step4/",
 "runway_input_file":"runways_detection.csv",
+"model_input_path":"./Inputs/Model/",
+"folder_train":"train/",
+"folder_test":"test/",
+"train_label_file":"labels_train.csv",
+"test_label_file":"template_test.csv",
 "Outputs_path":"./Outputs/",
 "Outputs_test_path":"Outputs_Test/",
 "airportextraction_file":"Extracted_Airports/",
 "runways_extraction_file":"Extracted_Runways/",
-"folder_extraction_airports":"ExtractionAirports/"
+"folder_extraction_airports":"ExtractionAirports/",
+"folder_model": "Model/",
+"folder_inference":"Inference/"
+},
+"model":{"model_name":"model20221117_15-15-48",
+"save_preds":false,
+"IMG_SIZE":224,
+"CHANNELS":3,
+"BATCH_SIZE":256,
+"LR":0.0001,
+"N_LABELS":5,
+"EPOCHS":2,
+"THRESH":0.5,
+"PREDICTION_THRESH":0.4,
+"FEATURE_EXTRACTOR_URL":"https://tfhub.dev/google/imagenet/mobilenet_v3_large_100_224/feature_vector/5",
+"model_name":"model20221117_15-15-48",
+"train":true,
+"NUMBER_OF_LAYERS":13
+},
+"inference":{ "template_test_path": "./Inputs/Model/template_test.csv",
+  "prediction_shape": "200,5"
 }
 }

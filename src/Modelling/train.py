@@ -50,24 +50,5 @@ class Train():
                                 )
         logging.info(f'Training took {round(time()-start, 2)} sec')
         return history
-    
-    def load_my_model(self):
-        """Function that loads a past model.
-        Args:
-            path (str): path to the wanted model, 
-            custom_objects (dict): dictionnary of the custom object integrated into the model
-
-        Returns:
-            loaded_model (keras.engine.sequential.Sequential)
-        """
-        path = self.conf["paths"]["Outputs_path"] + self.conf["paths"]["folder_model"]
-        model = self.conf["model"]["model_name"]
-        custom_objects = {'KerasLayer':hub.KerasLayer,
-                          'macro_f1': self.macro_f1,
-                          'macro_soft_f1':self.macro_soft_f1}
-        loaded_model = keras.models.load_model(path + model,
-                                               custom_objects)
-
-        return loaded_model
 
 

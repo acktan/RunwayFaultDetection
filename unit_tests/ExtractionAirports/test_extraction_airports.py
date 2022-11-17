@@ -2,9 +2,7 @@
 
 import sys
 import json
-#sys.path.insert(0, "../src/Extraction_Airports/")
 from src.Extraction_Airports.extraction_airports import Extractionairports
-#import extraction_airports
 
 path_conf = './unit_tests/Params/config_test.json'
 conf = json.load(open(path_conf, 'r'))
