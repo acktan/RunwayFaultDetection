@@ -50,8 +50,8 @@ def main(logger, conf, img_shape):
         logger.info(f"The train and validation Macro F1: {macro_f1}, {val_macro_f1}.")
     else:
         logger.info("Loading Model...")
-        train_class = train.Train(conf)
-        model_mobilenet = train_class.load_my_model()
+        model_class = model.Model(conf)
+        model_mobilenet = model_class.load_my_model()
     # Enter name of submission if save_preds = True in conf.json
     inference_class = inference.Inference(conf, model_mobilenet, "test_subm")
     df = inference_class.make_prediction()
