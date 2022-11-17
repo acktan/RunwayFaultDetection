@@ -3,13 +3,13 @@
 import geopandas
 import pandas as pd
 import numpy as np
-import cv2
 from PIL import Image, ImageDraw
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon, mapping
 import rasterio
 from rasterio.windows import Window
 import warnings
+import cv2
 
 import logging
 logger = logging.getLogger('main_logger')
