@@ -1,6 +1,6 @@
 {
 "paths":{"bdortho_geom_input_path" : "./Inputs/AirportExtractionSample_Step3/Orthophotos_Geom/dalles.shp",
-"bdortho_input_path": "./Inputs/AirportExtractionSample_Step3/Orthopotos/",
+"bdortho_input_path": "./Inputs/AirportExtractionSample_Step3/Orthophotos/",
 "bdcarta_input_path": "./Inputs/AirportExtractionSample_Step3/BD_CARTA/france.shp",
 "runway_input_path":"./Inputs/RunwayExtractionSample_Step4/",
 "runway_input_file":"runways_detection.csv",
