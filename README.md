@@ -1,4 +1,39 @@
-# Colas Project
+# Multi-label classification of runway images to determine the different defects they may have 
+**Colas x MSc X-HEC Data Science for Business**
+
+## Presentation of the project
+
+### Quick overview of the project 
+This computer vision challenge has been proposed to sereval teams from the MSc X-HEC Data Science for Business by the AI / Data Science team of the building group COLAS, subsidiary of the Bouygues Group. COLAS works on several businesses (Road, rail, manufacturing, quarries, pipeline, ...)
+
+### Objective 
+Identify asphalt mixed defeact on airport track, and rank them with a clear data visualization. Identify airport with the best business opportunity for Colas, regarding its activities. Extend the consideration to all kind of Colas Business opportunities
+
+### Step for the chalenge
+1. Collect french airport open data
+The objective of this step is to identify & collect open data of french airports (name, geolocalization...).
+We used the BD Carto & BD Orthophoto from the French public organization IGN : https://geoservices.ign.fr/bdcarto
+
+2. Collect french orthophotos
+The objective was to collect IGN's orthophotos (each picture 25k x 25k pixels represents a square of 5km per 5km). Again, we found them on the IGN opendata platform : https://geoservices.ign.fr/bdortho#telechargement
+
+3. Extract airport images
+Here the objective was to extract picture for each airport. To achieve this objective, we linked the airports geolocalization from step 1 & orthophotos from step 2 to extract airports pictures.
+
+4. Extract runway images
+Similarly, the objective was to extract picture for each runaway from each airport. We used the tool [Label Studio](https://labelstud.io/guide/) to label the runaways manually before extracting them with Python
+
+5. Modeling
+Here, the objective was to Train a computer vision model to predict damages (multi label image classification). Metrics is weighted F1 score. Shout out to [Ashref Maiza](https://github.com/ashrefm/) who wrote this  really cool [article](https://towardsdatascience.com/multi-label-image-classification-in-tensorflow-2-0-7d4cf8a4bc72) on which we based a large part of our model.
+
+6. Business opportunities
+This step was particularly important to the Colas team. We had to identify similar uses cases or new business opportunities for COLAS Group based on the computer vision technology.
+
+7. Pitch
+Last but not least, we presented the team's results and especially the potential of the technology for the Colas Group during a presentation in front of several senior COlAS collaborators (Chief Digital Officer, Chief Data Officer, Digital and Core business applications Director, Chief Data Officer, Lead Data/AI, ...) and HEC professors (head of Corporate Partnership Dpt, Prof. Chair Holder of Bouygues Chair “Smart city and the common good”, Associate Dean for Research)
+
+## Structure of the repository
+
 
 
 
