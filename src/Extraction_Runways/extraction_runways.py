@@ -8,7 +8,8 @@ import pandas as pd
 import numpy as np
 
 import logging
-logger = logging.getLogger('main_logger')
+
+logger = logging.getLogger("main_logger")
 
 
 class Extractrunways:
@@ -24,11 +25,14 @@ class Extractrunways:
         Returns:
            df_runways: A dataframe with coordinates of runways in each row.
         """
-        path = self.conf_path["runway_input_path"] + self.conf_path["runway_input_file"]
+        path = self.conf_path["runway_input_path"] + \
+            self.conf_path["runway_input_file"]
         df_runways = pd.read_csv(path)
-        df_runways["image"] = df_runways["image"].apply(lambda x: "cropped" + x.split("cropped")[1])
-        df_runways['label'] = df_runways['label'].apply(literal_eval)
-        df_runways = df_runways.explode('label').reset_index(drop=True)
+        df_runways["image"] = df_runways["image"].apply(
+            lambda x: "cropped" + x.split("cropped")[1]
+        )
+        df_runways["label"] = df_runways["label"].apply(literal_eval)
+        df_runways = df_runways.explode("label").reset_index(drop=True)
         return df_runways
 
     def calculate_coordinates(self, label):
@@ -47,13 +51,23 @@ class Extractrunways:
         # Calculate added distances
         alpha = math.atan(pixel_height / pixel_width)
         # Label studio defines the angle towards the vertical axis
-        beta = math.pi * (angle/ 180)
+        beta = math.pi * (angle / 180)
 
-        radius = math.sqrt((pixel_width/2) ** 2 + (pixel_height/2) ** 2)
+        radius = math.sqrt((pixel_width / 2) ** 2 + (pixel_height / 2) ** 2)
 
         # Label studio saves the position of top left corner after rotation
-        x_0 = pixel_x - radius * (math.cos(math.pi - alpha - beta) - math.cos(math.pi - alpha)) + pixel_width / 2
-        y_0 = pixel_y + radius * (math.sin(math.pi - alpha - beta) - math.sin(math.pi - alpha)) + pixel_height / 2
+        x_0 = (
+            pixel_x
+            - radius * (math.cos(math.pi - alpha - beta)
+                        - math.cos(math.pi - alpha))
+            + pixel_width / 2
+        )
+        y_0 = (
+            pixel_y
+            + radius * (math.sin(math.pi - alpha - beta)
+                        - math.sin(math.pi - alpha))
+            + pixel_height / 2
+        )
 
         theta_1 = alpha + beta
         theta_2 = math.pi - alpha + beta
@@ -72,12 +86,14 @@ class Extractrunways:
             y_0 + radius * math.sin(theta_3),
             y_0 + radius * math.sin(theta_4),
         ]
-        cnt = np.array([
-                    [[int(x_coord[0]), int(y_coord[0])]],
-                    [[int(x_coord[1]), int(y_coord[1])]],
-                    [[int(x_coord[2]), int(y_coord[2])]],
-                    [[int(x_coord[3]), int(y_coord[3])]],
-                ])
+        cnt = np.array(
+            [
+                [[int(x_coord[0]), int(y_coord[0])]],
+                [[int(x_coord[1]), int(y_coord[1])]],
+                [[int(x_coord[2]), int(y_coord[2])]],
+                [[int(x_coord[3]), int(y_coord[3])]],
+            ]
+        )
         return cnt
 
     def crop_save_runway(self, rect, image_name, path_output, index):
@@ -92,7 +108,10 @@ class Extractrunways:
         time_2 = time.time()
         logger.info(f"Read image. This took {time_2-time_1}")
         if img is None:
-            logger.info(f"The image does not exist in the airports cropped: {image_name}")
+            logger.info(
+                f"The image does not exist in the airports cropped: \
+                    {image_name}"
+            )
         else:
             cv2.drawContours(img, [box], 0, (0, 0, 255), 2)
 
@@ -102,19 +121,22 @@ class Extractrunways:
 
             src_pts = box.astype("float32")
 
-            # coordinate of the points in box points after the rectangle has been
-            # straightened
-            dst_pts = np.array([[0, height-1],
-                                    [0, 0],
-                                    [width-1, 0],
-                                    [width-1, height-1]], dtype="float32")
+            # coordinate of the points in box points after the rectangle
+            # has been straightened
+            dst_pts = np.array(
+                [[0, height - 1], [0, 0], [width - 1, 0],
+                 [width - 1, height - 1]],
+                dtype="float32",
+            )
             # the perspective transformation matrix
             M = cv2.getPerspectiveTransform(src_pts, dst_pts)
 
-            # directly warp the rotated rectangle to get the straightened rectangle
+            # directly warp the rotated rectangle to get the
+            # straightened rectangle
             warped = cv2.warpPerspective(img, M, (width, height))
             time_3 = time.time()
-            logger.info(f"Crop and rotate rectangle. This took {time_3-time_2}")
+            logger.info(f"Crop and rotate rectangle. This took \
+                {time_3-time_2}")
             path_im = image_name.split("cropped")[1]
             shape_warped = warped.shape
             # check if image is horizontal and change to vertical
@@ -125,7 +147,6 @@ class Extractrunways:
             logger.info(f"Save Runway. This took {time_4-time_3}")
         return None
 
-
     def detect_save_runway(self):
         """Extract and save runways.
         Args:
@@ -135,9 +156,10 @@ class Extractrunways:
         """
         df_runways = self.get_labeled_runways()
         for index in df_runways.index:
-            label = df_runways.loc[index,"label"]
-            image_name = df_runways.loc[index,"image"]
-            logger.info(f"Start cropping runway process for image: {image_name}")
+            label = df_runways.loc[index, "label"]
+            image_name = df_runways.loc[index, "image"]
+            logger.info(f"Start cropping runway process for image: \
+                {image_name}")
             cnt = self.calculate_coordinates(label)
             rect = cv2.minAreaRect(cnt)
             path = self.conf_path["Outputs_path"]
