@@ -7,7 +7,7 @@ cache:
     - venv/
 before_script:
   - apt-get update && apt-get install -y python3-opencv
-  - pip install pytest pandas geopandas rasterio rtree pygeos opencv-python pillow matplotlib
+  - pip install pytest pandas geopandas rasterio rtree pygeos opencv-python pillow matplotlib tensorflow_hub tensorflow keras
 test:
   script:
     - python -m pytest
