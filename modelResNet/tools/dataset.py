@@ -9,10 +9,7 @@ from keras.preprocessing import image
 from torchvision.transforms.autoaugment import AutoAugmentPolicy
 
 class ImageDataset(Dataset):
-    def __init__(self, 
-                 csv: pd.DataFrame, 
-                 train: bool, 
-                 test: bool) -> Dataset():
+    def __init__(self, csv: pd.DataFrame, train: bool, test: bool) -> Dataset():
         self.csv = csv
         self.train = train
         self.test = test
@@ -29,9 +26,6 @@ class ImageDataset(Dataset):
             self.transform = transforms.Compose([
                 transforms.ToPILImage(),
                 transforms.Resize((400, 400)),
-                transforms.AutoAugment(policy=AutoAugmentPolicy.IMAGENET),
-                transforms.RandomHorizontalFlip(p=0.5),
-                transforms.RandomRotation(degrees=45),
                 transforms.ToTensor(),
             ])
         # set the validation data images and labels
@@ -58,16 +52,17 @@ class ImageDataset(Dataset):
     def __len__(self):
         return len(self.image_names)
     
-    def __getitem__(self, 
-                    index):
-        image = cv2.imread(cfg.imageTrainPath+self.image_names[index])
+    def __getitem__(self, index):
+        image = cv2.imread(imageTrainPath+self.image_names[index])
         # convert the image from BGR to RGB color format
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         # apply image transforms
         image = self.transform(image)
         targets = self.labels[index]
+        nameFile = self.image_names[index]
         
         return {
             'image': torch.tensor(image, dtype=torch.float32),
-            'label': torch.tensor(targets, dtype=torch.float32)
+            'label': torch.tensor(targets, dtype=torch.float32),
+            'filename': str(nameFile)
         }

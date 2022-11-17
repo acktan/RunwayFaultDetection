@@ -21,7 +21,7 @@ if __name__ == "__main__":
     model = model(pretrained=True, requires_grad=False).to(device)
     #loss and optimizer
     optimizer = optim.Adam(model.parameters(), lr=cfg.lr)
-    criterion = nn.BCELoss()  
+    criterion = nn.CrossEntropyLoss()
     
     #data init
     trainData = ImageDataset(trainLabels, train=True, test=False)
@@ -38,18 +38,26 @@ if __name__ == "__main__":
         valData, 
         batch_size=cfg.batch_size,
         shuffle=False)
+    
+    #running epochs, printings loss and f1 scores
     train_loss = []
     valid_loss = []
+    train_f1_score = []
+    val_f1_score = []
 
-    for epoch in range(cfg.epochs):
-        print(f"Epoch {epoch+1} of {cfg.epochs}")
-        train_epoch_loss = train(
+    for epoch in range(epochs):
+        print(f"Epoch {epoch+1} of {epochs}")
+        train_epoch_loss, train_f1 = train(
             model, trainLoader, optimizer, criterion, trainData, device
         )
-        valid_epoch_loss = validate(
+        valid_epoch_loss, val_f1 = validate(
             model, validLoader, criterion, valData, device
         )
         train_loss.append(train_epoch_loss)
         valid_loss.append(valid_epoch_loss)
-        print(f"Train Loss: {train_epoch_loss:.4f}")
-        print(f'Val Loss: {valid_epoch_loss:.4f}')
+        train_f1_score.append(train_f1)
+        val_f1_score.append(val_f1)
+        print(f'Train loss: {train_epoch_loss:.4f}')
+        print(f'Val loss: {valid_epoch_loss:.4f}')
+        print(f'F1-Score train: {train_f1_score[epoch]}')
+        print(f'F1-Score val: {val_f1_score[epoch]}')
