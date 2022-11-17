@@ -19,6 +19,8 @@ THRESH = 0.5
 
 PREDICTION_THRESH = 0.4
 
+TEST_SIZE = 0.2
+
 SAVED_MODELS_PATH_TO_FOLDERS = REPO + 'hfactory_magic_folders/colas_data_challenge/group_shared_workspace/Models/saved_models/'
 FOLDER_NAME = '28th_model_augustin_LR_0_00001_MobileNetV3_50E_augmented_0_3thresh/'
 MODEL_NAME = 'epoch_{epoch:02d}_val_loss_{val_loss:.4f}.h5'

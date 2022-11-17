@@ -20,7 +20,7 @@ labels_train = pd.read_csv(label_train_path)
 
 X_train, X_test, y_train, y_test = train_test_split(labels_train['filename'],
                                                     labels_train.drop('filename', axis=1),
-                                                    test_size=0.2,
+                                                    test_size=TEST_SIZE,
                                                     random_state=44
                                                    )
 
